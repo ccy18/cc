@@ -54,12 +54,29 @@ Import **one** of the three notebook files using any of the options below:
 ### After importing — upload the dataset
 
 1. Download the MovieLens 25M dataset from https://grouplens.org/datasets/movielens/25m/
-2. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to a **Unity Catalog Volume** in Databricks:
-   - Navigate to **Catalog** > select your catalog and schema > **Create Volume** (e.g. name it `my_volume`)
-   - Upload the three CSV files into the volume
-3. Open the imported notebook — a **widget text box** will appear at the top labelled "Data folder path"
-4. Update the path to match your volume (e.g. `/Volumes/workspace/default/my_volume/`)
-5. Run all cells in the notebook
+2. Extract the downloaded zip file to get the CSV files
+3. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to a **Unity Catalog Volume** by following these steps:
+
+#### Step-by-step: Create a Volume and upload files
+
+1. In the left sidebar, click **Catalog**
+2. Under "My organization", click **`workspace`**
+3. Click the **`default`** schema
+4. Click **Create Volume** (or click the **+** button next to Volumes)
+5. Name it **`my_volume`** and click **Create**
+6. Click on the newly created **`my_volume`** volume
+7. Click **Upload to this volume** and upload these 3 files:
+   - `movies.csv`
+   - `tags.csv`
+   - `ratings.csv`
+
+> Your files will now be at `/Volumes/workspace/default/my_volume/` — this matches the notebook's default path, so you can run the notebook without changing anything.
+
+#### Run the notebook
+
+1. Go back to **Workspace** and open the imported notebook
+2. A **widget text box** labelled "Data folder path" will appear at the top — it should already show `/Volumes/workspace/default/my_volume/`
+3. Click **Run All** to execute all cells
 
 ### File Paths
 
