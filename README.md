@@ -19,20 +19,40 @@ The assignment uses the [MovieLens 25M dataset](https://grouplens.org/datasets/m
 
 | File | Description |
 |------|-------------|
-| `IT2312_Assignment.py` | Databricks-compatible Python notebook source |
-| `IT2312_Assignment.ipynb` | Jupyter Notebook format |
+| `IT2312_Assignment.dbc` | Databricks Archive — import directly via Databricks Workspace |
+| `IT2312_Assignment.py` | Databricks Python notebook source — importable as a notebook |
+| `IT2312_Assignment.ipynb` | Jupyter Notebook format — importable into Databricks or Jupyter |
 
-## Setup Instructions
+## How to Import into Databricks
 
-### Using Databricks
+### Option 1: Import the `.dbc` archive (recommended)
+
+1. In Databricks, go to your **Workspace**
+2. Right-click on your target folder → **Import**
+3. Select **File** and upload `IT2312_Assignment.dbc`
+4. The notebook will appear ready to use
+
+### Option 2: Import the `.py` file
+
+1. In Databricks, go to your **Workspace**
+2. Right-click on your target folder → **Import**
+3. Select **File** and upload `IT2312_Assignment.py`
+4. Databricks will recognise it as a notebook source
+
+### Option 3: Import the `.ipynb` file
+
+1. In Databricks, go to your **Workspace**
+2. Right-click on your target folder → **Import**
+3. Select **File** and upload `IT2312_Assignment.ipynb`
+
+### After importing — upload the dataset
 
 1. Download the MovieLens 25M dataset from https://grouplens.org/datasets/movielens/25m/
 2. In Databricks, create a Unity Catalog Volume (or use an existing one):
    - Navigate to **Catalog** > select your catalog and schema > **Create Volume**
 3. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to the Volume
-4. Update the file paths in the notebook to match your Volume path (see below)
-5. Import `IT2312_Assignment.py` as a Databricks notebook, or upload `IT2312_Assignment.ipynb`
-6. Run all cells in the notebook
+4. Open the imported notebook and update `BASE_PATH` to match your Volume path (see below)
+5. Run all cells in the notebook
 
 ### File Paths
 
