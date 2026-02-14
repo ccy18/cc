@@ -48,22 +48,23 @@ The assignment uses the [MovieLens 25M dataset](https://grouplens.org/datasets/m
 ### After importing — upload the dataset
 
 1. Download the MovieLens 25M dataset from https://grouplens.org/datasets/movielens/25m/
-2. In Databricks, create a Unity Catalog Volume (or use an existing one):
-   - Navigate to **Catalog** > select your catalog and schema > **Create Volume**
-3. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to the Volume
-4. Open the imported notebook and update `BASE_PATH` to match your Volume path (see below)
+2. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to Databricks:
+   - **Using the UI**: In your Workspace, click **File** > **Upload data to DBFS** and upload the three CSV files to `/FileStore/tables/`
+   - **Using Unity Catalog Volumes**: Navigate to **Catalog** > select your catalog and schema > **Create Volume**, then upload the CSV files there
+3. Open the imported notebook — a **widget text box** will appear at the top labelled "Data folder path"
+4. Enter the path where you uploaded the files (e.g. `/FileStore/tables/` or `/Volumes/workspace/default/data/`)
 5. Run all cells in the notebook
 
 ### File Paths
 
-The notebook expects data files at Unity Catalog Volume paths:
-- `/Volumes/<catalog>/<schema>/<volume>/movies.csv`
-- `/Volumes/<catalog>/<schema>/<volume>/tags.csv`
-- `/Volumes/<catalog>/<schema>/<volume>/ratings.csv`
+The notebook uses a configurable `BASE_PATH` widget. Set it to wherever you uploaded the CSV files:
 
-Replace `<catalog>`, `<schema>`, and `<volume>` with your actual Unity Catalog, schema, and volume names in the notebook.
+| Upload method | Path to enter |
+|---------------|---------------|
+| DBFS upload (UI) | `/FileStore/tables/` |
+| Unity Catalog Volume | `/Volumes/<catalog>/<schema>/<volume>/` |
 
-> **Note:** Public DBFS root (`/FileStore/tables/`) is disabled on many Databricks workspaces. Unity Catalog Volumes (`/Volumes/...`) is the recommended way to access files.
+The widget appears at the top of the notebook when you run the first code cell.
 
 ## Assignment Structure
 

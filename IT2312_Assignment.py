@@ -23,10 +23,19 @@ from pyspark.sql.functions import col, count, avg, lower, when
 # Create SparkSession (already available in Databricks as 'spark')
 # spark = SparkSession.builder.appName("IT2312_Assignment").getOrCreate()
 
-# Load the CSV files into DataFrames
-# Update the base path below to match your Databricks Unity Catalog Volume
-# e.g. /Volumes/my_catalog/my_schema/my_volume/
-BASE_PATH = "/Volumes/my_catalog/my_schema/my_volume/"
+# ---------- CONFIGURE YOUR FILE PATH HERE ----------
+# Set BASE_PATH to the location where you uploaded movies.csv, tags.csv, and ratings.csv.
+#
+# Examples:
+#   Unity Catalog Volume : "/Volumes/workspace/default/data/"
+#   DBFS (if enabled)    : "/FileStore/tables/"
+#
+# You can also use the widget at the top of the notebook to change the path at runtime.
+dbutils.widgets.text("base_path", "/FileStore/tables/", "Data folder path")
+BASE_PATH = dbutils.widgets.get("base_path")
+# Ensure the path ends with a slash
+if not BASE_PATH.endswith("/"):
+    BASE_PATH += "/"
 
 movies_df = spark.read.csv(BASE_PATH + "movies.csv", header=True, inferSchema=True)
 tags_df = spark.read.csv(BASE_PATH + "tags.csv", header=True, inferSchema=True)
