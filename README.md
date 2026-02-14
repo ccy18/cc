@@ -17,13 +17,19 @@ The assignment uses the [MovieLens 25M dataset](https://grouplens.org/datasets/m
 
 ## Files
 
+The three notebook files below are **the same notebook** in different formats. You only need to import **one** of them into Databricks.
+
 | File | Description |
 |------|-------------|
-| `IT2312_Assignment.dbc` | Databricks Archive — import directly via Databricks Workspace |
-| `IT2312_Assignment.py` | Databricks Python notebook source — importable as a notebook |
-| `IT2312_Assignment.ipynb` | Jupyter Notebook format — importable into Databricks or Jupyter |
+| `IT2312_Assignment.dbc` | Databricks Archive — **recommended**, import directly via Databricks Workspace |
+| `IT2312_Assignment.py` | Databricks Python notebook source — alternative import option |
+| `IT2312_Assignment.ipynb` | Jupyter Notebook format — alternative import option |
+
+> **You do NOT need to import all 3 files.** Pick one (`.dbc` is recommended) and import it into Databricks.
 
 ## How to Import into Databricks
+
+Import **one** of the three notebook files using any of the options below:
 
 ### Option 1: Import the `.dbc` archive (recommended)
 
