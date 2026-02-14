@@ -27,11 +27,11 @@ from pyspark.sql.functions import col, count, avg, lower, when
 # Set BASE_PATH to the location where you uploaded movies.csv, tags.csv, and ratings.csv.
 #
 # Examples:
-#   Unity Catalog Volume : "/Volumes/workspace/default/data/"
+#   Unity Catalog Volume : "/Volumes/workspace/default/my_volume/"
 #   DBFS (if enabled)    : "/FileStore/tables/"
 #
 # You can also use the widget at the top of the notebook to change the path at runtime.
-dbutils.widgets.text("base_path", "/FileStore/tables/", "Data folder path")
+dbutils.widgets.text("base_path", "/Volumes/workspace/default/my_volume/", "Data folder path")
 BASE_PATH = dbutils.widgets.get("base_path")
 # Ensure the path ends with a slash
 if not BASE_PATH.endswith("/"):

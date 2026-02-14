@@ -54,21 +54,23 @@ Import **one** of the three notebook files using any of the options below:
 ### After importing — upload the dataset
 
 1. Download the MovieLens 25M dataset from https://grouplens.org/datasets/movielens/25m/
-2. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to Databricks:
-   - **Using the UI**: In your Workspace, click **File** > **Upload data to DBFS** and upload the three CSV files to `/FileStore/tables/`
-   - **Using Unity Catalog Volumes**: Navigate to **Catalog** > select your catalog and schema > **Create Volume**, then upload the CSV files there
+2. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to a **Unity Catalog Volume** in Databricks:
+   - Navigate to **Catalog** > select your catalog and schema > **Create Volume** (e.g. name it `my_volume`)
+   - Upload the three CSV files into the volume
 3. Open the imported notebook — a **widget text box** will appear at the top labelled "Data folder path"
-4. Enter the path where you uploaded the files (e.g. `/FileStore/tables/` or `/Volumes/workspace/default/data/`)
+4. Update the path to match your volume (e.g. `/Volumes/workspace/default/my_volume/`)
 5. Run all cells in the notebook
 
 ### File Paths
 
-The notebook uses a configurable `BASE_PATH` widget. Set it to wherever you uploaded the CSV files:
+The notebook uses a configurable `BASE_PATH` widget (default: `/Volumes/workspace/default/my_volume/`). Update it to match where you uploaded the CSV files:
 
 | Upload method | Path to enter |
 |---------------|---------------|
-| DBFS upload (UI) | `/FileStore/tables/` |
 | Unity Catalog Volume | `/Volumes/<catalog>/<schema>/<volume>/` |
+| DBFS upload (if enabled) | `/FileStore/tables/` |
+
+> **Note:** Public DBFS (`/FileStore/tables/`) is disabled on many Databricks workspaces. Use **Unity Catalog Volumes** (`/Volumes/...`) instead.
 
 The widget appears at the top of the notebook when you run the first code cell.
 
