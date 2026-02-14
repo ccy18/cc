@@ -80,14 +80,11 @@ Import **one** of the three notebook files using any of the options below:
 
 ### File Paths
 
-The notebook uses a configurable `BASE_PATH` widget (default: `/Volumes/workspace/default/my_volume/`). Update it to match where you uploaded the CSV files:
+The notebook uses a configurable `BASE_PATH` widget (default: `/Volumes/workspace/default/my_volume/`).
 
-| Upload method | Path to enter |
-|---------------|---------------|
-| Unity Catalog Volume | `/Volumes/<catalog>/<schema>/<volume>/` |
-| DBFS upload (if enabled) | `/FileStore/tables/` |
+If you followed the steps above and named your volume `my_volume`, the default path will work — no changes needed.
 
-> **Note:** Public DBFS (`/FileStore/tables/`) is disabled on many Databricks workspaces. Use **Unity Catalog Volumes** (`/Volumes/...`) instead.
+If you used a different catalog, schema, or volume name, update the widget at the top of the notebook to: `/Volumes/<catalog>/<schema>/<volume>/`
 
 The widget appears at the top of the notebook when you run the first code cell.
 

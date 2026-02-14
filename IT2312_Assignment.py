@@ -24,13 +24,11 @@ from pyspark.sql.functions import col, count, avg, lower, when
 # spark = SparkSession.builder.appName("IT2312_Assignment").getOrCreate()
 
 # ---------- CONFIGURE YOUR FILE PATH HERE ----------
-# Set BASE_PATH to the location where you uploaded movies.csv, tags.csv, and ratings.csv.
-#
-# Examples:
-#   Unity Catalog Volume : "/Volumes/workspace/default/my_volume/"
-#   DBFS (if enabled)    : "/FileStore/tables/"
+# Set BASE_PATH to the Unity Catalog Volume where you uploaded movies.csv, tags.csv, and ratings.csv.
+# Default: /Volumes/workspace/default/my_volume/
 #
 # You can also use the widget at the top of the notebook to change the path at runtime.
+dbutils.widgets.removeAll()
 dbutils.widgets.text("base_path", "/Volumes/workspace/default/my_volume/", "Data folder path")
 BASE_PATH = dbutils.widgets.get("base_path")
 # Ensure the path ends with a slash
