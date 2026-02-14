@@ -27,18 +27,23 @@ The assignment uses the [MovieLens 25M dataset](https://grouplens.org/datasets/m
 ### Using Databricks
 
 1. Download the MovieLens 25M dataset from https://grouplens.org/datasets/movielens/25m/
-2. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to Databricks FileStore (`/FileStore/tables/`)
-3. Import `IT2312_Assignment.py` as a Databricks notebook, or upload `IT2312_Assignment.ipynb`
-4. Run all cells in the notebook
+2. In Databricks, create a Unity Catalog Volume (or use an existing one):
+   - Navigate to **Catalog** > select your catalog and schema > **Create Volume**
+3. Upload `movies.csv`, `tags.csv`, and `ratings.csv` to the Volume
+4. Update the file paths in the notebook to match your Volume path (see below)
+5. Import `IT2312_Assignment.py` as a Databricks notebook, or upload `IT2312_Assignment.ipynb`
+6. Run all cells in the notebook
 
 ### File Paths
 
-The notebook expects data files at:
-- `/FileStore/tables/movies.csv`
-- `/FileStore/tables/tags.csv`
-- `/FileStore/tables/ratings.csv`
+The notebook expects data files at Unity Catalog Volume paths:
+- `/Volumes/<catalog>/<schema>/<volume>/movies.csv`
+- `/Volumes/<catalog>/<schema>/<volume>/tags.csv`
+- `/Volumes/<catalog>/<schema>/<volume>/ratings.csv`
 
-Update these paths in the notebook if your files are stored in a different location.
+Replace `<catalog>`, `<schema>`, and `<volume>` with your actual Unity Catalog, schema, and volume names in the notebook.
+
+> **Note:** Public DBFS root (`/FileStore/tables/`) is disabled on many Databricks workspaces. Unity Catalog Volumes (`/Volumes/...`) is the recommended way to access files.
 
 ## Assignment Structure
 

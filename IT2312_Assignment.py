@@ -24,10 +24,13 @@ from pyspark.sql.functions import col, count, avg, lower, when
 # spark = SparkSession.builder.appName("IT2312_Assignment").getOrCreate()
 
 # Load the CSV files into DataFrames
-# Update the file paths below to match your Databricks environment
-movies_df = spark.read.csv("/FileStore/tables/movies.csv", header=True, inferSchema=True)
-tags_df = spark.read.csv("/FileStore/tables/tags.csv", header=True, inferSchema=True)
-ratings_df = spark.read.csv("/FileStore/tables/ratings.csv", header=True, inferSchema=True)
+# Update the base path below to match your Databricks Unity Catalog Volume
+# e.g. /Volumes/my_catalog/my_schema/my_volume/
+BASE_PATH = "/Volumes/my_catalog/my_schema/my_volume/"
+
+movies_df = spark.read.csv(BASE_PATH + "movies.csv", header=True, inferSchema=True)
+tags_df = spark.read.csv(BASE_PATH + "tags.csv", header=True, inferSchema=True)
+ratings_df = spark.read.csv(BASE_PATH + "ratings.csv", header=True, inferSchema=True)
 
 # Display the schemas
 print("Movies Schema:")
