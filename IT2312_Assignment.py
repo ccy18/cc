@@ -18,7 +18,7 @@
 # COMMAND ----------
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, count, avg, lower, when, trim
+from pyspark.sql.functions import col, count, avg, lower, when
 
 # Create SparkSession (already available in Databricks as 'spark')
 # spark = SparkSession.builder.appName("IT2312_Assignment").getOrCreate()
@@ -106,7 +106,7 @@ q1_df.show(truncate=False)
 boring_overrated_tags = tags_df.filter(lower(col("tag")).isin(["boring", "overrated"]))
 
 # Calculate average rating per movie
-avg_ratings = ratings_df.groupBy("movieId").agg(avg("rating").alias("avg_rating"))
+avg_ratings = ratings_df.groupBy("movieId").agg(avg("rating").alias("avg_rating")).cache()
 
 # Join tags with movies and average ratings
 q2_df = (
