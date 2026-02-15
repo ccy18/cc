@@ -8,6 +8,12 @@
 
 # COMMAND ----------
 
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("IT2312_Assignment").getOrCreate()
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Part 1 – Data Ingestion
 
