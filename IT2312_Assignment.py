@@ -232,28 +232,48 @@ task5_df.show(truncate=False)
 # MAGIC %md
 # MAGIC ### Task 6: Conclusions
 # MAGIC
-# MAGIC Based on the data exploration performed above, the following conclusions can be drawn:
+# MAGIC The two business objectives of this analysis are to **(1) identify new movie genres to target and produce** and **(2) identify examples and elements of bad movies to avoid replicating**. The following conclusions synthesise insights from all five exploration tasks to directly address these objectives.
 # MAGIC
-# MAGIC **1. Popular Genres Among Uncommon Tags:**
-# MAGIC From Task 1, we can observe which tags are most frequently applied by users beyond the common genres
-# MAGIC (sci-fi, action, comedy, mystery, war, politics, religion, thriller). This reveals niche interests and emerging
-# MAGIC genres that the film production company could target. Tags with high occurrence counts represent
-# MAGIC underserved audience interests that present production opportunities.
+# MAGIC ---
 # MAGIC
-# MAGIC **2. Characteristics of Poorly Rated vs. Highly Rated Movies:**
-# MAGIC - Task 2 shows movies tagged as 'boring' or 'overrated' tend to have lower average ratings, confirming
-# MAGIC   that audience perception aligns with these negative descriptors. The production company should study
-# MAGIC   these titles to understand what elements lead to viewer dissatisfaction and avoid replicating them.
-# MAGIC - Task 3 shows movies tagged as 'great acting' or 'inspirational' tend to receive higher average ratings,
-# MAGIC   suggesting that investing in strong performances and meaningful storytelling correlates with audience approval.
+# MAGIC **Conclusion 1 — Untapped Genre Opportunities for New Productions (Business Objective 1)**
 # MAGIC
-# MAGIC **3. Rating Distribution and Tag Patterns:**
-# MAGIC - Task 4 and Task 5 reveal how tags distribute across different rating ranges. Tags that appear frequently
-# MAGIC   in the higher rating ranges (4 to 5, 5 and more) indicate qualities associated with well-received films.
-# MAGIC - Tags concentrated in lower rating ranges (Below 1, 1 to 2) highlight attributes the company should avoid.
-# MAGIC - The filtering of tag counts > 200 ensures we focus on statistically significant patterns rather than outliers.
+# MAGIC Task 1 removed eight mainstream genre tags (sci-fi, action, comedy, mystery, war, politics, religion, thriller) to surface the tags that audiences organically apply most often. The high-frequency tags that remain — such as those related to atmospheric qualities (e.g., "atmospheric", "visually stunning"), narrative themes (e.g., "thought-provoking", "dark comedy"), and emotional impact (e.g., "twist ending", "feel-good") — represent viewer interests that are **underserved by traditional genre classifications**.
 # MAGIC
-# MAGIC **Actionable Recommendations:**
-# MAGIC 1. Target production in genres/themes identified by high-frequency uncommon tags to capture underserved audiences.
-# MAGIC 2. Avoid elements commonly found in 'boring' and 'overrated' movies (e.g., predictable plots, poor pacing).
-# MAGIC 3. Invest in 'great acting' talent and 'inspirational' storytelling as these correlate strongly with higher ratings.
+# MAGIC This is strategically significant: because these tags reflect genuine, recurring audience demand rather than industry-defined categories, the production company can differentiate itself by developing films that intentionally target these niche descriptors. For example, rather than producing a generic "drama", the company could greenlight projects specifically designed to be "atmospheric" and "thought-provoking" — qualities that audiences actively seek out and tag, but that few studios deliberately market as core selling points.
+# MAGIC
+# MAGIC The sheer volume of these uncommon tags indicates a sizeable, engaged audience segment whose preferences are currently under-targeted by competitors.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC **Conclusion 2 — Defining Elements of Bad Movies to Avoid (Business Objective 2)**
+# MAGIC
+# MAGIC Tasks 2, 4, and 5 together paint a clear picture of what makes a movie fail in the eyes of audiences. Task 2 reveals that movies tagged as "boring" or "overrated" consistently sit at the **bottom of the average-rating spectrum**. This confirms that audience dissatisfaction is not random — it clusters around identifiable, repeatable patterns.
+# MAGIC
+# MAGIC Critically, the word "boring" points to **pacing and engagement failures** (e.g., slow plots, lack of tension), while "overrated" suggests a **gap between marketing hype and actual content quality**. The production company should treat these as two distinct failure modes: one is a creative problem (poor storytelling), and the other is a positioning problem (over-promising in marketing).
+# MAGIC
+# MAGIC Task 5 reinforces this by showing which tags dominate the lower rating ranges (Below 1, 1 to 2). Tags with counts exceeding 200 in these low ranges are statistically significant indicators of audience rejection — they are not outliers but persistent, large-scale patterns. By cross-referencing the most frequent tags in low-rating ranges with the titles from Task 2, the company can build a concrete checklist of pitfalls to avoid during script development and production planning.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC **Conclusion 3 — Blueprint for High-Rated Films (Business Objectives 1 & 2)**
+# MAGIC
+# MAGIC Task 3 provides the positive counterpart: movies tagged "great acting" or "inspirational" cluster at the **top of the average-rating spectrum**. This is not merely a correlation — it reflects a causal audience preference. Strong acting performances create emotional investment, while inspirational narratives deliver lasting viewer satisfaction, both of which translate directly into higher ratings and positive word-of-mouth.
+# MAGIC
+# MAGIC Combined with Task 5, which shows tags with high counts in the 4-to-5 and 5-and-more rating ranges, a pattern emerges: **the most commercially and critically viable films share a combination of strong performances, emotionally resonant themes, and distinctive stylistic qualities**.
+# MAGIC
+# MAGIC Task 4's rating-range bucketing further reveals that the vast majority of tagged interactions fall in the 3-to-4 and 4-to-5 ranges, indicating that audiences who take the time to tag movies are generally engaged viewers — making their positive tags especially valuable as predictors of broad audience appeal. The production company should use these high-rated tags as a creative brief: invest in casting (great acting), develop stories with uplifting or meaningful arcs (inspirational), and layer in the atmospheric and thought-provoking qualities surfaced in Task 1.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC **Strategic Recommendations**
+# MAGIC
+# MAGIC Based on the above conclusions, the following actionable strategies are recommended:
+# MAGIC
+# MAGIC 1. **Genre Strategy:** Prioritise production of films that target the top uncommon tags identified in Task 1. These tags represent proven audience interests outside mainstream genres and offer a competitive advantage through differentiation. Market these films using the tag language audiences already use (e.g., "a visually stunning, thought-provoking thriller") to align promotion with genuine viewer expectations.
+# MAGIC
+# MAGIC 2. **Quality Control — Avoiding Bad-Movie Traits:** Establish an internal review process during pre-production that screens scripts and rough cuts against the negative-tag patterns from Tasks 2 and 5. Specifically, flag projects at risk of being "boring" (pacing issues, lack of conflict) or "overrated" (marketing that outpaces content quality). This preventive approach is more cost-effective than correcting failures post-release.
+# MAGIC
+# MAGIC 3. **Talent and Story Investment:** Allocate a larger share of the production budget to casting (to secure "great acting") and script development (to craft "inspirational" narratives), as Task 3 demonstrates these are the strongest predictors of high audience ratings. This investment has a compounding return: highly rated films generate organic word-of-mouth and repeat viewership, reducing long-term marketing costs.
+# MAGIC
+# MAGIC 4. **Data-Driven Greenlighting:** Integrate tag-based audience analysis into the greenlighting process. Before approving a new project, cross-reference its intended genre, themes, and style against the tag-frequency and rating-range data from Tasks 1, 4, and 5 to estimate its audience reception. This transforms subjective editorial judgement into an evidence-based decision framework.
