@@ -151,3 +151,48 @@ q5_df = (q4_df
          .orderBy(col("rating_range").asc(), col("numTag").desc()))
 
 display(q5_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Q6. Conclusions
+# MAGIC
+# MAGIC Based on the data exploration performed above, the following conclusions and actionable recommendations are drawn to address the two business objectives: **identifying new movie genres to target and produce**, and **identifying examples and elements of bad movies to avoid replicating**.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC #### 1. Opportunity in Uncommon Genres — Target Niche Audiences with High-Engagement Content
+# MAGIC
+# MAGIC From **Q1**, after excluding the mainstream genre-related tags (sci-fi, action, comedy, mystery, war, politics, religion, thriller), the most frequently applied user tags are descriptive qualities such as *atmospheric*, *surreal*, *based on a book*, *twist ending*, *funny*, *visually appealing*, *dystopia*, and *dark comedy*. These tags represent the **attributes audiences actively seek out and remember**, rather than broad genre labels. This indicates a strong viewer appetite for movies that deliver distinctive storytelling elements — particularly atmospheric world-building, narrative surprises (twist endings), and visual craftsmanship.
+# MAGIC
+# MAGIC **Recommendation:** The production company should prioritise films that blend uncommon genre elements with these high-engagement attributes. For example, producing a *visually appealing dystopian thriller with a twist ending* would tap into multiple high-frequency tags simultaneously, increasing discoverability and audience resonance. Rather than competing in saturated mainstream genres, investing in niche crossover films (e.g., atmospheric dark comedies, surreal dramas based on books) offers a differentiation strategy with proven audience interest.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC #### 2. Patterns of Poor-Quality Movies — What to Avoid
+# MAGIC
+# MAGIC From **Q2**, the worst-rated movies tagged as *boring* or *overrated* have average ratings as low as 0.5 to 1.6. Titles such as *The Expedition*, *Water Boyy*, *Disaster Movie*, and *Andron* represent the lowest-rated films that audiences explicitly labelled negatively. Meanwhile, from **Q3**, films tagged *great acting* or *inspirational* — such as *The Shawshank Redemption* (avg ~4.41), *The Godfather* (avg ~4.32), and *12 Angry Men* (avg ~4.24) — consistently achieve ratings above 4.0.
+# MAGIC
+# MAGIC The contrast is clear: **strong performances and meaningful storytelling are the strongest predictors of high ratings**, while films perceived as unoriginal, dull, or overhyped receive the harshest audience judgement.
+# MAGIC
+# MAGIC **Recommendation:** The company should invest in strong screenwriting and casting as the primary quality drivers. Avoid greenlighting projects that rely heavily on spectacle or franchise recognition without substantive narrative depth, as these are most likely to be tagged *boring* or *overrated* by audiences.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC #### 3. Tags That Signal Failure — Early Warning Indicators for Production
+# MAGIC
+# MAGIC From **Q5**, within the **1 to 2 rating range**, the most frequent tags are *boring*, *predictable*, *bad acting*, and *stupid* — all exceeding 200 occurrences. In the **2 to 3 range**, *boring* and *predictable* remain the dominant negative descriptors. This reveals that **predictability and lack of engagement are the two most consistent elements of poorly received movies** across all low-rating bands.
+# MAGIC
+# MAGIC Conversely, in the higher rating ranges (3 to 4, 4 to 5), positive descriptive tags related to genre or mood (e.g., *sci-fi*, *action*, *atmospheric*) dominate, suggesting that movies with **clear genre identity and strong tonal execution** are rewarded by audiences.
+# MAGIC
+# MAGIC **Recommendation:** During the development and pre-production phases, the company should implement audience-testing checkpoints that specifically screen for *predictability* and *engagement level*. Scripts and early cuts flagged as predictable or slow-paced should be revised before further investment. Additionally, ensuring films have a well-defined genre identity — rather than being generic or unfocused — will improve audience reception and ratings.
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC #### Strategic Summary
+# MAGIC
+# MAGIC | Business Objective | Key Finding | Actionable Recommendation |
+# MAGIC |---|---|---|
+# MAGIC | Identify new genres to target | Audiences value *atmospheric*, *twist ending*, *visually appealing*, and *dark comedy* content beyond mainstream genres | Produce niche crossover films that combine these high-engagement attributes |
+# MAGIC | Identify elements of bad movies to avoid | *Boring*, *predictable*, and *bad acting* are the strongest signals of poor reception | Invest in strong screenwriting and acting; implement predictability screening during development |
+# MAGIC | Quality benchmarks | Top-rated tagged films average 4.0+ ratings; worst-rated average below 1.5 | Use audience tagging patterns as quality benchmarks during test screenings |
