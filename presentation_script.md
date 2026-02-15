@@ -1,186 +1,276 @@
 # IT2312 2025 S2 Individual Assignment — Presentation Script
 
 **Duration:** 8–10 minutes  
-**Format:** Screen-share of Databricks notebook with narration  
-**Tip:** Open each cell's output before you start recording so you can scroll through results smoothly.
+**Format:** Screen-share of Databricks notebook with webcam overlay  
 
 ---
 
-## SLIDE / SECTION 1 — Introduction (~1 minute)
+## 🎬 Pre-Recording Checklist
+
+Before you press record, complete every item below:
+
+- [ ] **Webcam on** — position yourself in the top-right corner overlay so the audience can see your face throughout.
+- [ ] **Notebook ready** — run all cells in the Databricks notebook so every output is already visible; collapse any code cells you plan to expand live.
+- [ ] **Zoom level** — set your browser to 110–125 % so table outputs are legible on a recorded screen.
+- [ ] **Mouse cursor** — use a large or highlighted cursor (Databricks Accessibility settings or an OS pointer-size increase) so viewers can follow where you point.
+- [ ] **Quiet environment** — close other apps, silence notifications.
+- [ ] **Water nearby** — keep a glass of water within reach for a mid-presentation sip if needed.
+- [ ] **Practice run** — rehearse at least once end-to-end out loud, timing yourself. Aim for 8–9 minutes.
+
+---
+
+## 🗣️ Delivery Tips (apply throughout)
+
+| Rubric Area | What to Do |
+|---|---|
+| **Eye contact** | Look at your webcam lens (not the screen) when delivering key points and conclusions. Glance at the notebook only when pointing at data. |
+| **Posture** | Sit upright with shoulders relaxed. Avoid slouching or swaying. |
+| **Gestures** | Use hand gestures when listing items ("first… second… third…"). Keep gestures within the webcam frame. |
+| **Vocal variety** | Slow down and lower your pitch for important findings. Speed up slightly for code walkthroughs to signal familiarity. Avoid monotone. |
+| **Pauses** | Pause for 1–2 seconds after stating a key finding — this lets the audience absorb the point and makes you sound confident. |
+| **Engagement** | Use rhetorical questions ("So what does this tell us?") and bridging phrases ("Now, here is where it gets interesting…") to keep the audience invested. |
+| **Fluency** | If you stumble, don't restart — just pause, breathe, and continue. Short pauses sound more natural than filler words like "um" or "uh". |
+
+---
+
+## SECTION 1 — Introduction (~1 minute)
+
+**🎥 Visual:** Show the notebook title cell. Look at the webcam.
 
 > Hello, and welcome to my presentation for the IT2312 Big Data Modelling and Management Individual Assignment.
 >
-> In this assignment I am playing the role of a data scientist working for a film production company. The company has tasked me with two business objectives:
+> *[Look at webcam, speak with energy]*
 >
-> 1. **Identify new movie genres to target and produce**, and  
-> 2. **Identify examples and elements of bad movies to avoid replicating.**
+> Imagine you are running a film production company. You need to decide: what kind of movies should we make next — and just as importantly, what mistakes should we avoid? Those are exactly the two business objectives I was tasked with:
 >
-> To achieve this, I am using the **MovieLens ml-25m dataset**, which contains approximately **25 million ratings** and over **1 million tag applications** across more than **62,000 movies**, created by roughly **162,000 users** between 1995 and 2019.
+> *[Raise one finger]* First, **identify new movie genres to target and produce**.  
+> *[Raise a second finger]* Second, **identify examples and elements of bad movies to avoid replicating**.
 >
-> I processed this data using **PySpark DataFrames** on the **Databricks** platform. Let me now walk you through my notebook.
+> To answer these questions, I used the **MovieLens ml-25m dataset** — one of the largest publicly available movie-rating datasets. It contains roughly **25 million ratings** and over **1 million user-applied tags** across more than **62,000 movies**, contributed by about **162,000 users** between 1995 and 2019.
+>
+> I processed all of this data using **PySpark DataFrames** on the **Databricks** platform — no SQL, purely DataFrame operations.
+>
+> Let me walk you through how I did it.
 
 ---
 
-## SLIDE / SECTION 2 — Part 1: Data Ingestion (~1 minute)
+## SECTION 2 — Part 1: Data Ingestion (~1 minute)
 
-> Starting with **Part 1 – Data Ingestion**.
->
-> *(Scroll to the data ingestion cells)*
->
-> I ingested three CSV files into Databricks using `spark.read.csv` with `header=True` and `inferSchema=True`:
->
-> - **movies.csv** — contains the movie ID, title, and genres.
-> - **tags.csv** — contains user-applied free-text tags for movies, along with timestamps.
-> - **ratings.csv** — contains user ratings on a 5-star scale with timestamps.
->
-> *(Scroll to the record-count output)*
->
-> After loading, I printed the number of records and columns for each file:
->
-> - **movies.csv** has **62,423 records** and **3 columns** — movieId, title, and genres.
-> - **tags.csv** has **1,093,360 records** and **4 columns** — userId, movieId, tag, and timestamp.
-> - **ratings.csv** has **25,000,095 records** and **4 columns** — userId, movieId, rating, and timestamp.
->
-> This confirms the data was ingested successfully and matches the expected dataset size.
+**🎥 Visual:** Scroll to the data-ingestion code cells. Use your cursor to highlight the `spark.read.csv` lines.
 
----
-
-## SLIDE / SECTION 3 — Q1: Unique Tags Excluding Common Genres (~1.5 minutes)
-
-> Moving on to **Part 2 – Data Exploration**, starting with **Question 1**.
+> Starting with **Part 1 — Data Ingestion**.
 >
-> *(Scroll to the Q1 code cell)*
+> *[Point cursor at the three `spark.read.csv` lines]*
 >
-> The task is to create a DataFrame showing unique tags and their occurrence counts, **excluding** the following mainstream genre-related tags: sci-fi, action, comedy, mystery, war, politics, religion, and thriller.
+> I loaded three CSV files into Databricks using `spark.read.csv` with `header=True` and `inferSchema=True` so that column names and data types are automatically detected.
 >
-> I used `lower()` for case-insensitive filtering, then grouped by the tag column and counted occurrences using `count`. Finally, I sorted in **descending order** by count.
+> The three files are:
+> - **movies.csv** — movie ID, title, and genres.
+> - **tags.csv** — user-applied free-text tags with timestamps.
+> - **ratings.csv** — user ratings on a 0.5-to-5 star scale with timestamps.
 >
-> *(Scroll to the Q1 output table)*
+> *[Scroll to the print output — hover cursor over each line as you read]*
 >
-> Looking at the results, the top tags are descriptive qualities rather than genres:
+> After loading, I printed the record and column counts:
 >
-> - **atmospheric** — over 6,500 occurrences
-> - **surreal** — over 5,300 occurrences
-> - **based on a book** — over 5,000 occurrences
-> - **twist ending** — about 4,800 occurrences
-> - **funny**, **visually appealing**, **dystopia**, and **dark comedy** also appear prominently.
+> - **movies.csv**: **62,423 records**, **3 columns**.
+> - **tags.csv**: **1,093,360 records**, **4 columns**.
+> - **ratings.csv**: **25,000,095 records**, **4 columns**. That is 25 million rows — a genuinely large dataset.
 >
-> This tells us that audiences actively tag movies with **experiential qualities** — things like atmosphere, narrative surprises, and visual style — rather than just broad genre labels. This insight is very valuable for our business objectives, which I will discuss in the conclusion.
+> *[Pause 1 second, look at webcam]*
+>
+> So the data is loaded and verified. Let's move on to exploring it.
 
 ---
 
-## SLIDE / SECTION 4 — Q2: Boring or Overrated Movies (~1.5 minutes)
+## SECTION 3 — Q1: Unique Tags Excluding Common Genres (~1.5 minutes)
 
-> **Question 2** asks me to find movies tagged as **boring** or **overrated**, show their title and average rating, and display the **top 10 sorted in ascending order** by average rating.
+**🎥 Visual:** Scroll to Q1. Briefly highlight the `exclude_tags` list in the code, then scroll to the output table.
+
+> Now we enter **Part 2 — Data Exploration**. Question 1 asks: what are the unique tags and how often do they appear, **after excluding** the common genre tags — sci-fi, action, comedy, mystery, war, politics, religion, and thriller?
 >
-> *(Scroll to the Q2 code cell)*
+> *[Point cursor at the exclude_tags list]*
 >
-> I filtered the tags DataFrame for tags matching "boring" or "overrated" using case-insensitive comparison. I then computed the **average rating per movie** from the ratings DataFrame, joined the results with the movies DataFrame to get titles, and sorted by average rating in ascending order.
+> Here is the list of tags I filtered out. I used `lower()` for case-insensitive matching, then grouped by tag and counted occurrences, sorted in descending order.
 >
-> *(Scroll to the Q2 output table)*
+> *[Scroll to the Q1 output table — move cursor down the rows as you speak]*
 >
-> The results show the **worst-rated movies** that audiences explicitly labelled negatively:
+> And here are the results. Notice something interesting — the top tags are **not genre labels**. They are *experiential qualities*:
 >
-> - **The Expedition** and **Water Boyy** have the lowest average ratings at **0.5** — effectively the worst possible score.
-> - **Disaster Movie** at roughly **1.2** and **Andron** at about **1.45** follow closely.
-> - Other titles like **When Do We Eat**, **Arson Mom**, and **The Aftermath** also fall in the **1.5–1.6 range**.
+> - **atmospheric** — over 6,500 occurrences  
+> - **surreal** — over 5,300  
+> - **based on a book** — over 5,000  
+> - **twist ending** — about 4,800
 >
-> These are films that audiences not only rated poorly but also felt strongly enough about to tag as boring or overrated. This gives us concrete examples of what to avoid in future productions.
+> We also see **funny**, **visually appealing**, **dystopia**, and **dark comedy** ranking highly.
+>
+> *[Look at webcam, pause]*
+>
+> So what does this tell us? It tells us that when audiences tag a movie, they describe **how it made them feel** — the atmosphere, the surprise, the visual impact — rather than just its genre. This is a key insight, and I will connect it to our business recommendations in the conclusion.
 
 ---
 
-## SLIDE / SECTION 5 — Q3: Great Acting or Inspirational Movies (~1.5 minutes)
+## SECTION 4 — Q2: Boring or Overrated Movies (~1.5 minutes)
 
-> **Question 3** is the positive counterpart — movies tagged as **great acting** or **inspirational**, sorted by average rating in **descending order**, top 10.
+**🎥 Visual:** Scroll to Q2. Highlight the `filter` line, then scroll to the output table.
+
+> **Question 2** asks: which movies are tagged as **boring** or **overrated**, and what are their average ratings? I need to show the top 10, sorted by average rating in **ascending order** — worst first.
 >
-> *(Scroll to the Q3 code cell)*
+> *[Point cursor at the filter and join logic]*
 >
-> The approach is similar to Q2: I filtered for the positive tags, joined with average ratings and movie titles, and sorted descending.
+> I filtered the tags for "boring" or "overrated", computed the average rating per movie from the 25 million ratings, joined with movie titles, and sorted ascending.
 >
-> *(Scroll to the Q3 output table)*
+> *[Scroll to the Q2 output table — hover over the top rows]*
 >
-> The results include some of the most acclaimed films in cinema history:
+> Here are the worst-rated movies that audiences explicitly called out:
 >
-> - **The Shawshank Redemption** — average rating of approximately **4.41**
+> - **The Expedition** and **Water Boyy** — average rating of just **0.5**. That is the absolute bottom.
+> - **Disaster Movie** — about **1.2**. The title is almost self-explanatory.
+> - **Andron** — roughly **1.45**.
+> - Further down: **When Do We Eat**, **Arson Mom**, **The Aftermath** — all in the **1.5 to 1.6** range.
+>
+> *[Look at webcam with a slight head-shake for emphasis]*
+>
+> These are not just low-rated movies — they are movies that audiences felt strongly enough about to actively tag as boring or overrated. They give us real, data-backed examples of what *not* to replicate.
+>
+> Now let's look at the opposite end of the spectrum.
+
+---
+
+## SECTION 5 — Q3: Great Acting or Inspirational Movies (~1.5 minutes)
+
+**🎥 Visual:** Scroll to Q3. Scroll to the output table.
+
+> **Question 3** is the positive counterpart. Here I look at movies tagged **great acting** or **inspirational**, sorted by average rating in **descending order** — best first.
+>
+> *[Scroll to the Q3 output table — hover over each title as you mention it]*
+>
+> And the results read like a hall of fame:
+>
+> - **The Shawshank Redemption** — average rating approximately **4.41**
 > - **The Godfather** — approximately **4.32**
 > - **The Usual Suspects** — approximately **4.28**
 > - **The Godfather Part II** — approximately **4.26**
 > - **12 Angry Men** — approximately **4.24**
 > - **Fight Club** — approximately **4.00**
 >
-> The contrast with Q2 is striking. The best-rated films average **above 4.0**, while the worst-rated average **below 1.6**. This confirms that **strong acting and meaningful storytelling** are the strongest predictors of audience satisfaction.
+> *[Pause. Look at webcam.]*
+>
+> Now here is where it gets really interesting. Compare these numbers with Q2: the best-rated films average **above 4.0**. The worst-rated average **below 1.6**. That is a **massive gap** — nearly 3 full stars.
+>
+> The pattern is unmistakable: **strong acting and meaningful storytelling** are the strongest predictors of whether audiences love or hate a film. This directly informs our second business objective — what elements to invest in and what to avoid.
 
 ---
 
-## SLIDE / SECTION 6 — Q4: Rating Range Aggregation (~1 minute)
+## SECTION 6 — Q4: Rating Range Aggregation (~1 minute)
 
-> **Question 4** asks me to categorise each rating into ranges and create a DataFrame with the columns userId, movieId, rating, tag, and a new column called **rating_range**.
->
-> *(Scroll to the Q4 code cell)*
->
-> I first performed an **inner join** between the ratings and tags DataFrames on userId and movieId — this links each rating to its corresponding tags. Then I used PySpark's `when` function to classify each rating:
->
-> - **Below 1** for ratings less than 1
-> - **1 to 2** for ratings from 1 up to but not including 2
-> - **2 to 3**, **3 to 4**, and **4 to 5** following the same pattern
-> - **5 and more** for ratings of 5 or above
->
-> *(Scroll to the Q4 output table)*
->
-> As you can see, each row now shows the user, the movie, the original rating, the tag they applied, and the corresponding rating range. This structured data forms the foundation for Q5.
+**🎥 Visual:** Scroll to Q4. Highlight the `when` chain in the code, then scroll to the output.
 
----
-
-## SLIDE / SECTION 7 — Q5: Tag Counts by Rating Range (~1 minute)
-
-> **Question 5** builds on Q4 by aggregating the data — grouping by **rating_range** and **tag**, counting the number of tag occurrences, filtering for counts **greater than 200**, and sorting by rating range ascending and tag count descending.
+> **Question 4** prepares the data for deeper analysis. I need to categorise every rating into a named range and combine it with user tags.
 >
-> *(Scroll to the Q5 code cell and output)*
+> *[Point cursor at the `when` chain]*
 >
-> The results reveal important patterns:
+> First, I performed an **inner join** between the ratings and tags DataFrames on userId and movieId. Then I used PySpark's `when` function — essentially a series of if-else conditions — to create a new column called **rating_range**:
 >
-> - In the **1 to 2 rating range**, the top tags are **boring** with 452 occurrences, **predictable** with 275, **bad acting** with 228, and **stupid** with 211. These are the hallmarks of terrible movies.
-> - In the **2 to 3 range**, **boring** and **predictable** remain dominant, reinforcing that these are the most consistent negative signals.
-> - Moving up to the **3 to 4** and **4 to 5 ranges**, we see positive genre and mood tags like **sci-fi**, **action**, and **atmospheric** dominating — indicating that well-received films have a **clear genre identity**.
+> - **Below 1** for ratings under 1  
+> - **1 to 2**, **2 to 3**, **3 to 4**, **4 to 5** for each subsequent band  
+> - **5 and more** for perfect scores
 >
-> This is a powerful insight: the tags that appear most in low-rated bands are quality-related complaints, while high-rated bands feature genre and thematic descriptors.
+> *[Scroll to the Q4 output — point at the rating_range column]*
+>
+> Each row now links a user, a movie, the original rating, the tag they applied, and the rating band it falls into. This gives us a structured view that sets up the final analysis in Q5.
 
 ---
 
-## SLIDE / SECTION 8 — Q6: Conclusions and Recommendations (~2 minutes)
+## SECTION 7 — Q5: Tag Counts by Rating Range (~1 minute)
 
-> Finally, **Question 6 — my conclusions**. I have drawn three key conclusions that directly address our business objectives.
+**🎥 Visual:** Scroll to Q5. Scroll to the output table. Use cursor to trace down the rows.
+
+> **Question 5** is where the real story emerges. I grouped by **rating_range** and **tag**, counted occurrences, kept only tags with **more than 200 appearances**, and sorted by rating range ascending, then tag count descending.
 >
-> *(Scroll to the Q6 markdown section)*
+> *[Scroll to Q5 output — trace cursor along the rows as you speak]*
+>
+> Look at the **1 to 2 rating range** — the lowest band with significant data:
+>
+> - **boring** — **452** occurrences  
+> - **predictable** — **275**  
+> - **bad acting** — **228**  
+> - **stupid** — **211**
+>
+> These four tags are the DNA of a terrible movie.
+>
+> *[Scroll down to the higher ranges]*
+>
+> Now contrast this with the **3 to 4** and **4 to 5** ranges. Here, the dominant tags are **sci-fi**, **action**, **atmospheric** — genre and mood descriptors, not complaints.
+>
+> *[Look at webcam, pause]*
+>
+> The takeaway? Low-rated movies are defined by **quality failures** — boring, predictable, bad acting. High-rated movies are defined by **genre identity and atmosphere**. This is one of the most actionable insights in the entire analysis.
+
+---
+
+## SECTION 8 — Q6: Conclusions and Recommendations (~2 minutes)
+
+**🎥 Visual:** Scroll to the Q6 conclusions markdown. Point at each heading as you discuss it. At the end, highlight the Strategic Summary table.
+
+> Now for the most important part — **Question 6, my conclusions**. I have drawn three conclusions that directly address our company's business objectives.
+>
+> *[Point at Conclusion 1 heading]*
 >
 > **Conclusion 1: Opportunity in Uncommon Genres.**
 >
-> From Q1, we discovered that after removing mainstream genre tags, the most popular tags are experiential qualities — atmospheric, surreal, twist ending, visually appealing, dark comedy. This shows audiences actively seek films with distinctive storytelling elements beyond standard genres. My recommendation is to produce **niche crossover films** that combine these attributes — for example, a visually appealing dystopian drama with a twist ending. This offers a differentiation strategy in a market saturated with mainstream genre films.
+> From Q1, we learned that audiences' most-used tags — atmospheric, surreal, twist ending, visually appealing, dark comedy — describe *experiences*, not genres. This means there is strong demand for films that deliver distinctive storytelling qualities beyond the mainstream. My recommendation: produce **niche crossover films** that combine multiple high-frequency attributes — for example, *a visually striking dystopian drama with a twist ending*. This lets us differentiate rather than compete head-on in saturated genres.
 >
-> **Conclusion 2: Patterns of Poor-Quality Movies — What to Avoid.**
+> *[Point at Conclusion 2 heading]*
 >
-> From Q2 and Q3, we see a stark contrast: boring and overrated films score as low as 0.5, while great acting and inspirational films consistently score above 4.0. The data clearly shows that **strong screenwriting and casting are the primary drivers of audience satisfaction**. My recommendation is to invest in quality storytelling and avoid greenlighting projects that rely on spectacle or franchise recognition without narrative substance.
+> **Conclusion 2: What Makes Movies Fail — and Succeed.**
 >
-> **Conclusion 3: Tags That Signal Failure — Early Warning Indicators.**
+> From Q2 and Q3, the contrast is stark. Boring and overrated films score as low as 0.5. Films with great acting and inspirational storytelling consistently score above 4.0. The data is clear: **screenwriting and casting are the primary quality drivers**. My recommendation: prioritise investment in strong scripts and talented casts, and avoid greenlighting projects that rely purely on spectacle without substance.
 >
-> From Q5, the tags boring, predictable, bad acting, and stupid are overwhelmingly concentrated in the 1-to-2 rating range. Predictability and lack of engagement are the most consistent elements of failure. My recommendation is to implement **audience-testing checkpoints** during development — specifically screening for predictability and pacing issues. Scripts flagged as predictable should be revised before further investment.
+> *[Point at Conclusion 3 heading]*
 >
-> *(Point to the Strategic Summary table)*
+> **Conclusion 3: Early Warning Tags — Screen for Predictability.**
 >
-> I have summarised these findings in a strategic table mapping each business objective to the key finding and the corresponding actionable recommendation.
+> From Q5, the tags boring, predictable, bad acting, and stupid are overwhelmingly concentrated in the lowest rating band. Predictability and disengagement are the two most consistent markers of failure. My recommendation: implement **audience-testing checkpoints** during development. If early screenings flag a script or cut as predictable, revise it before committing further budget.
+>
+> *[Scroll to the Strategic Summary table — point at each row]*
+>
+> I have summarised all three conclusions in this strategic table, mapping each business objective to its key finding and actionable recommendation.
+>
+> *[Pause 2 seconds. Look at webcam.]*
 
 ---
 
-## SLIDE / SECTION 9 — Closing (~30 seconds)
+## SECTION 9 — Closing (~30 seconds)
 
-> In summary, through this big data analysis of 25 million ratings using PySpark on Databricks, I have:
+**🎥 Visual:** Stay on the Strategic Summary table or scroll back to the notebook title. Look at the webcam for the entire closing.
+
+> *[Speak slowly and clearly — this is the last impression]*
 >
-> 1. Identified that audiences value **atmospheric, surprising, and visually distinctive content** beyond mainstream genres — presenting opportunities for niche film production.
-> 2. Demonstrated that **boring and predictable** are the strongest negative signals, while **great acting and inspiration** drive the highest ratings.
-> 3. Provided actionable recommendations for the production company to **target underserved audience preferences** and **avoid the pitfalls** that lead to poor reception.
+> To wrap up: through this big data analysis of **25 million ratings** using PySpark on Databricks, I have shown that:
+>
+> *[Count on fingers]*
+>
+> **One** — audiences crave atmospheric, surprising, and visually distinctive content beyond mainstream genres, which presents clear opportunities for niche production.
+>
+> **Two** — boring and predictable are the strongest negative signals; great acting and inspiration drive the highest ratings.
+>
+> **Three** — these patterns translate into actionable recommendations the company can implement immediately — from genre targeting to quality screening during development.
+>
+> *[Smile, nod confidently]*
 >
 > Thank you for watching. This has been my presentation for the IT2312 Individual Assignment.
 
 ---
 
-*End of script — Total estimated duration: 8–10 minutes.*
+## 📋 Post-Recording Checklist
+
+- [ ] Watch your recording end-to-end. Check that all table outputs are legible.
+- [ ] Verify the video is between **5 and 10 minutes** in length.
+- [ ] Confirm your face is visible throughout (webcam overlay).
+- [ ] Ensure audio is clear with no background noise.
+- [ ] Export/save in a standard format (MP4 recommended) and upload to BrightSpace.
+
+---
+
+*End of script — Target duration: 8–10 minutes.*
