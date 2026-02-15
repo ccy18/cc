@@ -84,16 +84,20 @@ def build_script(stats):
         "SLIDE 1 – TITLE SLIDE",
         "~0:00 – 0:30",
         """\
+[DELIVERY CUE: Speak clearly, make eye contact with camera, smile.]
+
 NARRATION:
 Hello, my name is Clifton Chen Yi, Admin Number 231220B.
 
-In this presentation I will walk you through my Applied Machine-Learning
-project: "Predicting Student Course Completion."  I will cover the business
-objectives, the methodology, a walkthrough of my Jupyter Notebook with
-dataset insights, the key findings and recommendations, and finally one
-challenge I encountered and how I addressed it.
+Today I will present my Applied Machine-Learning project: "Predicting
+Student Course Completion."  I will walk you through five areas:
+  1. The business objectives and methodology.
+  2. A hands-on walkthrough of my Jupyter Notebook with dataset insights.
+  3. The key decisions I made and why.
+  4. Key findings and actionable recommendations.
+  5. A challenge I encountered and the lesson it taught me.
 
-Let's begin.""",
+Let's get started.""",
     )
 
     # ── Business Objectives & Methodology ──────────────────────────────────
@@ -101,6 +105,8 @@ Let's begin.""",
         "SLIDE 2 – BUSINESS OBJECTIVES & METHODOLOGY",
         "~0:30 – 2:30",
         f"""\
+[DELIVERY CUE: Speak with conviction about why this problem matters.]
+
 NARRATION:
 The goal of this project is to predict whether a student will complete an
 online course.  This is framed as a binary classification task — the target
@@ -111,6 +117,8 @@ dropout rates that often exceed 90 percent.  If we can identify at-risk
 students early, platforms can trigger targeted interventions — personalised
 reminders, additional support, or mentor outreach — and significantly
 improve completion rates and revenue.
+
+[SHOW SLIDE: Dataset summary table]
 
 DATASET:
 I used the "Student Course Completion Prediction Dataset" from Kaggle,
@@ -125,11 +133,16 @@ Completed versus {stats['not_completed_pct']}% Not Completed — which means
 accuracy is a valid metric and specialised class-imbalance techniques like
 SMOTE were unnecessary.
 
-SUCCESS CRITERIA:
-I defined three targets up front:
-  • Primary — F1-Score ≥ 0.70
-  • Secondary — ROC-AUC ≥ 0.75, Accuracy ≥ 0.70
-  • Generalisation — Cross-validation standard deviation < 0.02
+[DELIVERY CUE: Pause briefly, then state criteria with confidence.]
+
+SUCCESS CRITERIA — I set clear, measurable targets before building any
+models:
+  • Primary — F1-Score ≥ 0.70, because F1 balances precision and recall,
+    which matters when both false positives (unnecessary interventions) and
+    false negatives (missing at-risk students) carry real costs.
+  • Secondary — ROC-AUC ≥ 0.75, Accuracy ≥ 0.70.
+  • Generalisation — Cross-validation standard deviation < 0.02, to ensure
+    stable performance across different data splits.
 
 METHODOLOGY:
 My approach followed a standard machine-learning pipeline:
@@ -139,16 +152,22 @@ My approach followed a standard machine-learning pipeline:
      Gradient Boosting.
   4. Compare models on Accuracy, Precision, Recall, F1, and AUC.
   5. Tune the most promising model with GridSearchCV.
-  6. Validate with Stratified 5-Fold Cross-Validation.""",
+  6. Validate with Stratified 5-Fold Cross-Validation.
+
+Each step involved deliberate decisions, which I will explain as we go.""",
     )
 
     # ── Notebook Walkthrough ───────────────────────────────────────────────
     section(
-        "SLIDE 3 – JUPYTER NOTEBOOK WALKTHROUGH & DATASET INSIGHTS",
+        "SLIDE 3 – NOTEBOOK WALKTHROUGH, DATASET INSIGHTS & KEY DECISIONS",
         "~2:30 – 5:30",
         f"""\
+[DELIVERY CUE: Switch to screen-share of the notebook. Point to specific
+cells as you narrate each section.]
+
 NARRATION:
-Let me now walk you through the key sections of my Jupyter Notebook.
+Let me now walk you through the key sections of my Jupyter Notebook,
+highlighting the decisions I made and why.
 
 [Show Notebook — Section 1 & 2: Imports & Data Loading]
 After importing libraries such as pandas, scikit-learn, matplotlib, and
@@ -157,42 +176,77 @@ seaborn, I loaded the CSV file.  A quick .info() and .describe() confirmed
 missing values and no duplicates.
 
 [Show Notebook — Section 3: Exploratory Data Analysis]
-During EDA I examined distributions, correlations, and boxplots:
+During EDA I examined distributions, correlations, and boxplots.  Here are
+the insights that shaped my later decisions:
+
   • Age is roughly uniform between 17 and 52, mean around 26.
-  • Video Completion Rate spans 0–100 %, showing high variability.
-  • Progress Percentage also spans the full range — a strong separator.
-  • The correlation heatmap showed low inter-feature correlations, meaning
-    multicollinearity is not a concern.
-  • Boxplots revealed that Progress Percentage and Video Completion Rate
-    have the clearest separation between completers and non-completers.
-  • Categorical features — Gender, Education Level, Employment Status —
-    show nearly uniform completion rates, confirming that demographics have
-    limited predictive power.
+  • Video Completion Rate spans 0–100 %, showing high variability — this
+    told me it would likely be a strong predictor.
+  • Progress Percentage also spans the full range and showed the clearest
+    separation between completers and non-completers in boxplots.
+  • The correlation heatmap showed low inter-feature correlations (no pairs
+    above 0.8), which confirmed that multicollinearity is not a concern
+    and I could safely keep all features.
+  • Critically, categorical features — Gender, Education Level, Employment
+    Status — showed nearly uniform completion rates across categories.
+
+[DELIVERY CUE: Emphasise the following insight confidently.]
+
+  ★ KEY INSIGHT: This told me something important — demographics have
+    limited predictive power for this problem.  Engagement behaviour is
+    what truly differentiates completers from non-completers.  This finding
+    guided all my subsequent feature engineering and modelling decisions.
 
 [Show Notebook — Section 4: Data Cleaning & Feature Engineering]
 Because the dataset was pre-cleaned, I artificially introduced missing
-values and duplicates to practise real-world preprocessing.  I then:
-  • Applied median imputation (chosen over mean because several features
-    are right-skewed).
-  • Removed duplicates.
-  • Dropped identifier columns (Student_ID, Name, City, Course_ID,
-    Enrollment_Date) to prevent overfitting and data leakage.
-  • Used a hybrid encoding strategy: ordinal encoding for ordered features
-    (Education Level, Course Level, Internet Connection Quality) and
-    one-hot encoding for low-cardinality nominals (Gender, Device Type,
-    Payment Mode, etc.).
-  • Engineered two new features:
+values and duplicates to practise real-world preprocessing.  Here are
+the key decisions I made:
+
+  DECISION — Median vs Mean Imputation:
+    I chose median imputation because several features (Login_Frequency,
+    Time_Spent_Hours) are right-skewed.  The median is more robust to
+    outliers and better represents the typical value.  I also considered
+    KNN imputation but rejected it — too computationally expensive for
+    100,000 rows when only ~2 % of values were missing.
+
+  DECISION — Hybrid Encoding Strategy:
+    Rather than one-hot encoding everything (which would create a very
+    wide feature matrix, especially for City with 15+ unique values), I
+    used a targeted approach:
+      – Ordinal encoding for ordered features (Education Level, Course
+        Level, Internet Connection Quality) to preserve their natural rank.
+      – One-hot encoding only for low-cardinality nominals (Gender, Device
+        Type, Payment Mode).
+      – Dropped high-cardinality identifiers (Student_ID, Name, City,
+        Course_ID, Enrollment_Date) entirely to prevent overfitting and
+        data leakage.
+
+  DECISION — Feature Engineering Choices:
+    I created two new features:
       – Assignment Completion Rate = Submitted / (Submitted + Missed)
+        This ratio captures engagement quality better than raw counts.
       – Quiz Performance = Quiz Score Avg × Quiz Attempts
-  • Scaled features with StandardScaler for Logistic Regression.
+        This combines quality with effort — a student who scores 90 % on
+        five quizzes shows stronger engagement than one who scores 90 % on
+        just one.
+    I also considered a Session-to-Login ratio but decided against it
+    because it could produce extreme values for students with very low
+    login frequency.
+
+  • Scaled features with StandardScaler for Logistic Regression (essential
+    for distance-based algorithms), while tree-based models used unscaled
+    data since they are scale-invariant.
 
 [Show Notebook — Section 5: Model Training]
-I trained three models:
-  1. Logistic Regression — interpretable linear baseline.
-  2. Random Forest — bagging ensemble of decision trees.
-  3. Gradient Boosting — sequential boosting ensemble.
-I deliberately excluded SVM because its O(n²) complexity makes it
-impractical for a 100,000-row dataset.""",
+
+  DECISION — Why These Three Models:
+    I deliberately chose models from three different algorithm families:
+      1. Logistic Regression — interpretable linear baseline.
+      2. Random Forest — bagging ensemble of decision trees.
+      3. Gradient Boosting — sequential boosting ensemble.
+    I considered SVM but excluded it because its O(n²) complexity makes it
+    impractical for a 100,000-row dataset without significant subsampling,
+    which would reduce representativeness.""",
     )
 
     # ── Key Findings & Recommendations ─────────────────────────────────────
@@ -200,56 +254,87 @@ impractical for a 100,000-row dataset.""",
         "SLIDE 4 – KEY FINDINGS & RECOMMENDATIONS",
         "~5:30 – 8:00",
         """\
+[DELIVERY CUE: Show the model comparison table or chart. Present results
+with honesty — acknowledge targets were not met, but frame the learning.]
+
 NARRATION:
-Here are the key findings from the model comparison and evaluation.
+Now let me share the key findings from the model comparison and evaluation.
 
 MODEL PERFORMANCE:
+[Show comparison table]
   • Logistic Regression — F1 = 0.5924, AUC = 0.6484, Accuracy = 0.6047
   • Random Forest       — F1 = 0.5778, AUC = 0.6288, Accuracy = 0.5933
   • Gradient Boosting   — F1 = 0.5932, AUC = 0.6441, Accuracy = 0.6040
 
-All three models achieved around 60 % accuracy and F1 ≈ 0.59, falling
-short of my initial targets of F1 ≥ 0.70 and AUC ≥ 0.75.
+I want to be transparent: all three models achieved around 60 % accuracy
+and F1 ≈ 0.59, which falls short of my initial targets of F1 ≥ 0.70 and
+AUC ≥ 0.75.  But this shortfall is itself a valuable finding — it tells us
+that these 40 features simply do not contain enough signal to strongly
+distinguish completers from non-completers.
 
-Surprisingly, Logistic Regression — the simplest model — slightly
-outperformed both tree-based ensembles, suggesting that the predictive
-signal in this dataset is largely linear.
+[DELIVERY CUE: Lean in slightly — this is a surprising and important
+result.]
+
+  ★ KEY INSIGHT: Surprisingly, Logistic Regression — the simplest model —
+    slightly outperformed both tree-based ensembles.  This tells us the
+    predictive signal in this dataset is largely linear.  Adding model
+    complexity did not help; it only added noise.
 
 Random Forest showed severe overfitting: 100 % training accuracy but only
-59.3 % on the test set.
+59.3 % on the test set.  I will discuss how I handled this in the
+challenge section.
 
-After tuning Gradient Boosting with GridSearchCV, the best parameters were
-learning_rate = 0.1, max_depth = 3, and n_estimators = 100 — a shallower
-tree depth was preferred.  However, tuning did not improve test performance
-(F1 dropped marginally from 0.5932 to 0.5886), confirming that the
-defaults were already near-optimal and that hyperparameter tuning cannot
-create predictive signal that does not exist in the features.
+  DECISION — Why I Tuned Gradient Boosting (Not Logistic Regression):
+    Although Logistic Regression performed marginally better, Gradient
+    Boosting has more tunable hyperparameters (n_estimators, max_depth,
+    learning_rate) and greater potential for improvement through tuning.
+    I used GridSearchCV rather than RandomizedSearchCV because my
+    parameter grid was small — only 8 combinations — making exhaustive
+    search both feasible and thorough.
+
+After tuning, the best parameters were learning_rate = 0.1, max_depth = 3,
+and n_estimators = 100.  Notably, tuning selected a shallower tree depth
+(3 instead of 5), confirming that simpler models generalise better when
+the signal is weak.  However, test F1 dropped marginally from 0.5932 to
+0.5886 — proving that hyperparameter tuning cannot create signal that does
+not exist in the features.
 
 VALIDATION:
+[Show cross-validation results]
 Stratified 5-Fold Cross-Validation confirmed stable generalisation:
   • All metrics had standard deviations < 0.011, meeting my < 0.02 target.
   • Cross-validation accuracy (~0.60) aligned with hold-out test accuracy,
-    confirming my single train-test split was reliable.
+    confirming that my single train-test split was reliable and the model
+    is not overfitting to any particular data subset.
+
+  ★ SCORECARD AGAINST SUCCESS CRITERIA:
+      ✅ Cross-validation std < 0.02 — MET (all stds < 0.011)
+      ❌ F1-Score ≥ 0.70 — NOT MET (best F1 = 0.5924)
+      ❌ ROC-AUC ≥ 0.75 — NOT MET (best AUC = 0.6484)
 
 FEATURE IMPORTANCE:
-The most important predictors were engagement metrics:
+[Show feature importance chart]
+The most important predictors were all engagement metrics:
   1. Progress Percentage
   2. Video Completion Rate
   3. Quiz Score Average
   4. Project Grade
-  5. Assignment Completion Rate (engineered)
+  5. Assignment Completion Rate (my engineered feature)
 Demographic features (Gender, Education Level, City) ranked lowest,
-reinforcing that engagement data is far more valuable than demographics
-for predicting course completion.
+which directly confirms what EDA suggested: engagement data is far more
+valuable than demographics for predicting course completion.
 
-RECOMMENDATIONS:
-  1. Monitor engagement metrics in real time to identify at-risk students
-     early — especially Progress Percentage and Video Completion Rate.
+[DELIVERY CUE: Transition confidently to actionable recommendations.]
+
+RECOMMENDATIONS FOR COURSE PROVIDERS:
+  1. Monitor engagement metrics in real time — especially Progress
+     Percentage and Video Completion Rate — to flag at-risk students early.
   2. Trigger automated interventions (reminder emails, mentor outreach)
      when predicted completion probability drops below a threshold.
   3. Collect richer behavioural data — forum participation, video watch
      patterns, prior course history — to push accuracy beyond 60 %.
-  4. Use SHAP values in production for per-student explainability.
+  4. Use SHAP values in production for per-student explainability, so
+     instructors understand why a student was flagged.
   5. Verify that Progress Percentage is available at prediction time to
      avoid data leakage in a live system.""",
     )
@@ -259,30 +344,47 @@ RECOMMENDATIONS:
         "SLIDE 5 – CHALLENGE ENCOUNTERED & HOW IT WAS ADDRESSED",
         "~8:00 – 9:00",
         """\
+[DELIVERY CUE: Be candid and reflective.  Acknowledging mistakes shows
+maturity and genuine learning.]
+
 NARRATION:
-One significant challenge I encountered was Random Forest's severe
-overfitting.  The model achieved a perfect 100 % accuracy on the training
-set, yet only 59.3 % on the test set.  At first, this was surprising
-because Random Forest is generally considered robust.
+Let me share a significant challenge I encountered and the lesson it
+taught me.
 
-What happened?  The default scikit-learn parameters place no limit on tree
-depth and allow each leaf to contain as few as one sample.  With 100,000
-training rows and 40 features, the trees grew deep enough to memorise every
-training example — capturing noise rather than genuine patterns.
+THE PROBLEM:
+Random Forest achieved a perfect 100 % accuracy on the training set, yet
+only 59.3 % on the test set.  At first, this was surprising — Random
+Forest is generally considered a robust algorithm that resists overfitting
+through bagging and averaging.
 
-How I addressed it:
-  • I recognised the overfitting by comparing training versus test accuracy.
-  • Rather than spending excessive time tuning Random Forest, I shifted
-    focus to Gradient Boosting, which inherently controls complexity
-    through its learning rate and already showed a much smaller train-test
-    gap (63 % training vs 60 % test).
-  • During Gradient Boosting tuning, I explored shallower max_depth values
-    (3 vs 5), confirming that simpler models generalise better when the
-    underlying signal is weak.
+THE ROOT CAUSE:
+I investigated and found that the default scikit-learn parameters place
+no limit on tree depth and allow each leaf to contain as few as one
+sample.  With 100,000 training rows and 40 features, the trees grew deep
+enough to memorise every single training example — capturing noise rather
+than genuine patterns.
 
-This experience reinforced a critical lesson: a model that fits the
-training data perfectly is not necessarily a good model — generalisation to
-unseen data is what truly matters.""",
+HOW I ADDRESSED IT:
+  1. I detected the overfitting by systematically comparing training
+     versus test accuracy — a practice I now always perform.
+  2. Rather than spending excessive time tuning Random Forest's many
+     parameters, I made a strategic decision: I shifted focus to Gradient
+     Boosting, which inherently controls complexity through its learning
+     rate and already showed a much smaller train-test gap (63 % training
+     vs 60 % test).
+  3. During Gradient Boosting tuning, I explored shallower max_depth
+     values (3 vs 5), confirming that simpler models generalise better
+     when the underlying signal is weak.
+
+THE LESSON:
+[DELIVERY CUE: Speak slowly and deliberately for emphasis.]
+
+This experience reinforced a critical lesson that I will carry into every
+future project: a model that fits the training data perfectly is not a
+good model — generalisation to unseen data is what truly matters.
+Overfitting is not just a textbook concept; it has real consequences for
+prediction quality.  Always compare training and test metrics before
+trusting any model.""",
     )
 
     # ── Critical Insights & Closing ────────────────────────────────────────
@@ -290,32 +392,53 @@ unseen data is what truly matters.""",
         "SLIDE 6 – CRITICAL INSIGHTS & CLOSING",
         "~9:00 – 10:00",
         """\
+[DELIVERY CUE: Summarise with energy and confidence.  These are the
+takeaways the audience should remember.]
+
 NARRATION:
-To wrap up, here are the critical insights from this project:
+To close, here are the five critical insights from this project — the
+findings I believe are most important for anyone working on student
+retention prediction.
 
-  1. ENGAGEMENT OVER DEMOGRAPHICS — Behavioural engagement metrics such as
-     Progress Percentage and Video Completion Rate far outperform
-     demographic features in predicting course completion.  Course
-     providers should invest in tracking and leveraging these signals.
+  1. ENGAGEMENT OVER DEMOGRAPHICS
+     Behavioural engagement metrics — Progress Percentage and Video
+     Completion Rate — far outperform demographic features in predicting
+     course completion.  Course providers should invest in tracking and
+     leveraging these signals rather than relying on student profiles.
 
-  2. SIMPLER MODELS CAN WIN — Logistic Regression outperformed more complex
-     tree-based ensembles, proving that when the underlying signal is
-     linear, added complexity only adds noise.
+  2. SIMPLER MODELS CAN WIN
+     Logistic Regression outperformed both Random Forest and Gradient
+     Boosting.  This proves that when the underlying signal is linear,
+     adding model complexity only adds noise.  Always start with a simple
+     baseline before reaching for complex algorithms.
 
-  3. KNOW YOUR DATA'S LIMITS — Despite 40 features and 100,000 rows, the
-     dataset offered limited discriminative power (AUC ≈ 0.65).
-     Hyperparameter tuning cannot compensate for weak features.  The most
-     impactful next step is collecting richer, real-time behavioural data.
+  3. KNOW YOUR DATA'S LIMITS
+     Despite 40 features and 100,000 rows, the dataset offered limited
+     discriminative power (AUC ≈ 0.65).  No amount of hyperparameter
+     tuning can compensate for weak features.  The most impactful next
+     step is collecting richer, real-time behavioural data such as forum
+     participation and video watch patterns.
 
-  4. WATCH FOR DATA LEAKAGE — Progress Percentage, the single strongest
-     predictor, may partially encode whether a student has already
-     completed the course.  In production, it is essential to verify that
-     features are available at the time of prediction.
+  4. WATCH FOR DATA LEAKAGE
+     Progress Percentage — the single strongest predictor — may partially
+     encode whether a student has already completed the course.  In
+     production, it is essential to verify that every feature used at
+     prediction time is available before the outcome is known.
 
-  5. STABLE GENERALISATION — Cross-validation confirmed low variance
-     (std < 0.011), meaning the model performs consistently and is ready
-     for deployment as a baseline, even if overall accuracy needs
-     improvement.
+  5. STABLE GENERALISATION MATTERS
+     Cross-validation confirmed low variance (std < 0.011), meaning the
+     model performs consistently across data splits.  Even though overall
+     accuracy needs improvement, the model is stable enough to serve as a
+     reliable baseline for deployment.
+
+[DELIVERY CUE: End with a clear, confident closing.]
+
+In summary, this project demonstrates a complete, rigorous machine-
+learning workflow — from EDA through validation — and shows that
+understanding your data's limitations is just as important as building
+sophisticated models.  The decisions I made at each step were driven by
+the data itself, not assumptions, and the challenges I encountered taught
+me lessons that will make my future work stronger.
 
 Thank you for watching.  I welcome any questions or feedback.""",
     )
