@@ -20,7 +20,8 @@ def add_section(doc, title, content, speaking_notes):
     # Section content
     for paragraph_text in content:
         p = doc.add_paragraph(paragraph_text)
-        p.style.font.size = Pt(11)
+        for run in p.runs:
+            run.font.size = Pt(11)
 
     # Speaking notes box
     doc.add_paragraph()  # spacer
