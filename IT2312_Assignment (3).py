@@ -122,8 +122,16 @@ from pyspark.sql.functions import when
 # Join ratings with tags
 ratings_tags_df = ratings_df.join(tags_df, on=["userId", "movieId"], how="inner")
 
-# Select userId, movieId, rating, and tag
-q4_df = ratings_tags_df.select("userId", "movieId", "rating", "tag")
+# Select userId, movieId, rating, and tag, and add rating_range column
+q4_df = (ratings_tags_df
+         .select("userId", "movieId", "rating", "tag")
+         .withColumn("rating_range",
+                     when(col("rating") < 1, "Below 1")
+                     .when((col("rating") >= 1) & (col("rating") < 2), "1 to 2")
+                     .when((col("rating") >= 2) & (col("rating") < 3), "2 to 3")
+                     .when((col("rating") >= 3) & (col("rating") < 4), "3 to 4")
+                     .when((col("rating") >= 4) & (col("rating") < 5), "4 to 5")
+                     .otherwise("5 and more")))
 
 display(q4_df)
 
@@ -135,18 +143,8 @@ display(q4_df)
 
 # COMMAND ----------
 
-# Add rating_range column for aggregation
-ratings_with_range_df = (q4_df
-         .withColumn("rating_range",
-                     when(col("rating") < 1, "Below 1")
-                     .when((col("rating") >= 1) & (col("rating") < 2), "1 to 2")
-                     .when((col("rating") >= 2) & (col("rating") < 3), "2 to 3")
-                     .when((col("rating") >= 3) & (col("rating") < 4), "3 to 4")
-                     .when((col("rating") >= 4) & (col("rating") < 5), "4 to 5")
-                     .otherwise("5 and more")))
-
 # Aggregate by rating_range and tag, count tags
-q5_df = (ratings_with_range_df
+q5_df = (q4_df
          .groupBy("rating_range", "tag")
          .agg(count("*").alias("numTag"))
          .filter(col("numTag") > 200)
